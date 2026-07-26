@@ -1,6 +1,12 @@
-# BidMaster Pro 🚀
+<p align="center">
+    <img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo">
+</p>
 
+<h1 align="center">BidMaster Pro</h1>
+
+<p align="center">
 A full-stack digital auction platform developed for high-stakes online bidding, providing secure user management, live auctions, and an interactive multi-tier progression system.
+</p>
 
 ## 📌 Problem Statement
 
