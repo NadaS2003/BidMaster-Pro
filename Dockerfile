@@ -1,5 +1,4 @@
-FROM php:8.2-apache
-
+FROM php:8.4-apache
 # تثبيت المتطلبات الأساسية ومكتبات النظام اللازمة للاراول وقاعدة البيانات
 RUN apt-get update && apt-get install -y \
     git \
