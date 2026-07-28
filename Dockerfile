@@ -33,8 +33,10 @@ COPY . /var/www/html
 RUN composer install --no-dev --optimize-autoloader --no-interaction --no-scripts --verbose
 
 # تثبيت حزم الواجهات وبناء الـ Vite تلقائياً
-RUN npm install && npm run build
-
+RUN npm config set unsafe-perm true && \
+    npm cache clean --force && \
+    npm install --engine-strict=false && \
+    npm run build
 # صلاحيات ومجلدات Apache
 RUN chown -R www-data:www-data /var/www/html/storage /var/www/html/bootstrap/cache
 ENV APACHE_DOCUMENT_ROOT /var/www/html/public
