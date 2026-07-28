@@ -33,7 +33,7 @@ Route::middleware(['auth'])->group(function () {
 //Route::resource('auctions', AuctionController::class)->only(['index', 'show']); // السماح بعرض المزادات فقط للزوار
 
 
-Route->get('/run-schedule/{token}', function ($token) {
+Route::get('/run-schedule/{token}', function ($token) {
     // ضعي هنا رمزاً سرياً خاصاً بكِ لمنع المتطفلين من تشغيله
     $secretToken = 'your_super_secret_token_123';
 
