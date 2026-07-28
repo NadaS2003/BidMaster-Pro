@@ -9,6 +9,7 @@ use App\Models\Auction;
 use App\Models\User;
 use App\Observers\AuctionObserver;
 use Illuminate\Support\Facades\Gate;
+use Illuminate\Support\Facades\URL;
 use Illuminate\Support\ServiceProvider;
 use Livewire\Livewire;
 
@@ -27,6 +28,10 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
+        if (config('app.env') === 'production') {
+            URL::forceScheme('https');
+        }
+
         // ── Model Observers ───────────────────────────────────────────────
         Auction::observe(AuctionObserver::class);
 
