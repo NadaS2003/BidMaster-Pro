@@ -1,22 +1,26 @@
 FROM php:8.4-apache
 
-# تثبيت المتطلبات الأساسية ومكتبات النظام
+# تثبيت المتطلبات الأساسية ومكتبات النظام اللازمة لامتدادات PHP
 RUN apt-get update && apt-get install -y \
     git \
     curl \
     libpng-dev \
+    libjpeg-dev \
+    libfreetype6-dev \
     libonig-dev \
     libxml2-dev \
     zip \
     unzip \
     libpq-dev \
+    libcurl4-openssl-dev \
     gnupg
 
 # تثبيت Node.js (مطلوب لبناء Vite)
 RUN curl -fsSL https://deb.nodesource.com/setup_20.x | bash - \
     && apt-get install -y nodejs
 
-# تثبيت ملحقات PHP
+# تكوين وتثبيت ملحقات PHP بطريقة صحيحة ودعم الـ GD
+RUN docker-php-ext-configure gd --with-freetype --with-jpeg
 RUN docker-php-ext-install pdo pdo_mysql pdo_pgsql mbstring exif pcntl bcmath gd fileinfo xml curl
 
 # تثبيت Composer
