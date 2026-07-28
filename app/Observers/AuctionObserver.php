@@ -27,13 +27,23 @@ class AuctionObserver
     {
         Log::info("[AuctionObserver] Auction created: #{$auction->id}");
 
+        // التأكد من ضبط الحالة كـ active افتراضياً إذا لم تكن محددة
+        if (!$auction->status) {
+            $auction->updateQuietly(['status' => AuctionStatus::ACTIVE]);
+        }
+
         $this->analyzeAuctionTrust($auction);
 
-        $endTime = Carbon::parse($auction->end_time)->timezone(config('app.timezone'));
+        $endTime = Carbon::parse($auction->end_time);
+        $now = Carbon::now();
 
+        // التأكد من أن وقت الانتهاء في المستقبل، وحساب الفارق بالثواني بدقة
         if ($endTime->isFuture()) {
-            Log::info("[AuctionObserver] Dispatching CloseAuctionJob at {$endTime}");
-            CloseAuctionJob::dispatch($auction)->delay($endTime);
+            $delaySeconds = $now->diffInSeconds($endTime);
+
+            Log::info("[AuctionObserver] Dispatching CloseAuctionJob with delay of {$delaySeconds} seconds.");
+
+            CloseAuctionJob::dispatch($auction)->delay(now()->addSeconds($delaySeconds));
         }
     }
 

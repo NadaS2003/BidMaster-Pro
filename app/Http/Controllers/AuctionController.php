@@ -43,14 +43,13 @@ class AuctionController extends Controller
         $validated['user_id']       = auth()->id();
         $validated['current_price'] = $validated['starting_price'];
 
-        // Status defaults based on start_time presence
-        if (empty($validated['start_time'])) {
-            $validated['status'] = 'active';
-        } else {
-            $validated['status'] = 'upcoming';
-        }
+        // تمرير الحالة كقيمة Enum صريحة وليست نصاً عادياً
+        $validated['status']        = \App\Enums\AuctionStatus::ACTIVE;
 
-        Auction::create($validated);
+        $auction = Auction::create($validated);
+
+        // للتأكد الفوري من القيمة المخزنة في قاعدة البيانات بعد الإنشاء
+        \Illuminate\Support\Facades\Log::info('Created Auction Status: ' . $auction->status->value);
 
         return redirect()->route('home')->with('success', 'Auction created successfully!');
     }

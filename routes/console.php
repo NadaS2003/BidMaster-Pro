@@ -19,3 +19,4 @@ Artisan::command('inspire', function () {
 |
 */
 Schedule::command(ActivateUpcomingAuctions::class)->everyMinute();
+Schedule::command('auctions:close-expired')->everyMinute();

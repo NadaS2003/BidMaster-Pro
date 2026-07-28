@@ -6,6 +6,7 @@ use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\NotificationController;
 use App\Http\Controllers\SettingsController;
 use App\Http\Controllers\TierController;
+use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', [AuctionController::class, 'index'])->name('home');
@@ -32,3 +33,18 @@ Route::middleware(['auth'])->group(function () {
 //Route::resource('auctions', AuctionController::class)->only(['index', 'show']); // السماح بعرض المزادات فقط للزوار
 
 
+Route->get('/run-schedule/{token}', function ($token) {
+    // ضعي هنا رمزاً سرياً خاصاً بكِ لمنع المتطفلين من تشغيله
+    $secretToken = 'your_super_secret_token_123';
+
+    if ($token !== $secretToken) {
+        abort(403, 'Unauthorized action.');
+    }
+
+    Artisan::call('schedule:run');
+
+    return response()->json([
+        'status' => 'success',
+        'message' => 'Schedule executed successfully!'
+    ]);
+});
