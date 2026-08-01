@@ -226,8 +226,12 @@
             }
 
             console.log('Echo ready');
+            console.log('My current auction ID is:', "{{ $auction->id ?? 'NO ID FOUND' }}");
 
             window.Echo.channel('auction.{{ $auction->id }}')
+                .error((error) => {
+                    console.error('Pusher Subscription Error:', error); // هذا السطر سيخبرنا إذا كان هناك خطأ في الاشتراك بالقناة!
+                })
                 .listen('BidPlaced', (event) => { // أزلنا النقطة من هنا
 
                     console.log('EVENT RECEIVED', event);
