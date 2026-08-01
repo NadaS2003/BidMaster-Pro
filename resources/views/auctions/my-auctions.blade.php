@@ -20,7 +20,7 @@
 
                         <div class="relative h-48 bg-surface-container-highest flex items-center justify-center overflow-hidden">
                             @if ($auction->image_path)
-                                <img src="{{ asset('storage/' . $auction->image_path) }}" alt="{{ $auction->title }}" class="w-full h-full object-cover">
+                                <img src="{{  $auction->image_path }}" alt="{{ $auction->title }}" class="w-full h-full object-cover">
                             @else
                                 <div class="text-center p-md text-on-surface-variant">
                                     <span class="material-symbols-outlined text-4xl mb-1">image_not_supported</span>

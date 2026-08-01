@@ -11,7 +11,7 @@
             <div class="lg:col-span-2 space-y-lg">
                 <div class="glass-card rounded-xl overflow-hidden relative h-96">
                     @if($auction->image_path)
-                        <img src="{{ asset('storage/' . $auction->image_path) }}" alt="{{ $auction->title }}" class="w-full h-full object-cover">
+                        <img src="{{ $auction->image_path }}" alt="{{ $auction->title }}" class="w-full h-full object-cover">
                     @else
                         <div class="w-full h-full bg-surface-container-highest flex items-center justify-center text-on-surface-variant font-label-md">
                             No Image Available

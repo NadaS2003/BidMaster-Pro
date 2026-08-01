@@ -16,7 +16,7 @@
 
                 @if ($auction->image_path)
                     <div class="mb-md p-md bg-surface-container-lowest rounded-xl border border-outline-variant flex items-center gap-md">
-                        <img src="{{ asset('storage/' . $auction->image_path) }}" alt="{{ $auction->title }}" class="w-20 h-20 object-cover rounded-lg border border-outline-variant">
+                        <img src="{{ $auction->image_path }}" alt="{{ $auction->title }}" class="w-20 h-20 object-cover rounded-lg border border-outline-variant">
                         <div>
                             <p class="font-label-md text-on-surface">Current Image</p>
                             <p class="font-body-sm text-on-surface-variant text-xs">Uploading a new file will replace the current media.</p>

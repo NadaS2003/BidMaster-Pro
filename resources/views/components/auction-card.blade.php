@@ -3,7 +3,7 @@
 <div class="glass-card rounded-xl overflow-hidden flex flex-col group hover:border-primary transition-all duration-300 live-glow">
     <div class="relative h-48 overflow-hidden">
         @if($auction->image_path)
-            <img src="{{ asset('storage/' . $auction->image_path) }}" alt="{{ $auction->title }}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
+            <img src="{{  $auction->image_path }}" alt="{{ $auction->title }}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
         @else
             <div class="w-full h-full bg-surface-container-highest flex items-center justify-center text-on-surface-variant text-sm font-label-md">
                 No Image Available

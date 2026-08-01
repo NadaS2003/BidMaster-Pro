@@ -17,7 +17,7 @@
                     <div class="bg-surface-container rounded-xl border border-outline-variant overflow-hidden flex flex-col justify-between">
                         <div class="relative h-44 bg-surface-container-highest flex items-center justify-center">
                             @if($auction->image_path)
-                                <img src="{{ asset('storage/' . $auction->image_path) }}" class="w-full h-full object-cover">
+                                <img src="{{  $auction->image_path }}" class="w-full h-full object-cover">
                             @else
                                 <span class="text-xs text-on-surface-variant">No Image Available</span>
                             @endif
