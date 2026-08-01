@@ -228,7 +228,7 @@
             console.log('Echo ready');
 
             window.Echo.channel('auction.{{ $auction->id }}')
-                .listen('BidPlaced', (event) => {
+                .listen('BidPlaced', (event) => { // أزلنا النقطة من هنا
 
                     console.log('EVENT RECEIVED', event);
 
@@ -246,7 +246,7 @@
                     document.getElementById('current-price').innerText =
                         '$' + event.amount;
                 })
-                .listen('AuctionEnded', (event)=>{
+                .listen('AuctionEnded', (event)=>{ // وأزلنا النقطة من هنا أيضاً
 
                     console.log('AUCTION ENDED EVENT', event);
 
@@ -267,23 +267,23 @@
 
                         document.getElementById('auction-result').innerHTML = `
 
-                                <hr class="border-outline-variant">
+                            <hr class="border-outline-variant">
 
-                                <h3 class="text-base font-semibold text-green-400">
-                                🏆 Auction Result
-                                </h3>
+                            <h3 class="text-base font-semibold text-green-400">
+                            🏆 Auction Result
+                            </h3>
 
-                                <div class="flex justify-between">
-                                <span>Winner</span>
-                                <span>${event.winner}</span>
-                                </div>
+                            <div class="flex justify-between">
+                            <span>Winner</span>
+                            <span>${event.winner}</span>
+                            </div>
 
-                                <div class="flex justify-between">
-                                <span>Winning Bid</span>
-                                <span>$${event.price}</span>
-                                </div>
+                            <div class="flex justify-between">
+                            <span>Winning Bid</span>
+                            <span>$${event.price}</span>
+                            </div>
 
-                                `;
+                            `;
 
                     }
 
