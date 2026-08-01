@@ -228,72 +228,54 @@
             console.log('Echo ready');
             console.log('My current auction ID is:', "{{ $auction->id ?? 'NO ID FOUND' }}");
 
-            window.Echo.channel('auction.{{ $auction->id }}')
-                .error((error) => {
-                    console.error('Pusher Subscription Error:', error); // هذا السطر سيخبرنا إذا كان هناك خطأ في الاشتراك بالقناة!
-                })
-                .listen('BidPlaced', (event) => { // أزلنا النقطة من هنا
+            const channelName = 'auction.{{ $auction->id }}';
+            console.log('Attempting to subscribe to channel:', channelName);
 
-                    console.log('EVENT RECEIVED', event);
+            window.Echo.channel(channelName)
+                .subscribed(() => {
+                    console.log('SUCCESSFULLY SUBSCRIBED to channel:', channelName);
+                })
+                .error((error) => {
+                    console.error('Pusher Subscription Error:', error);
+                })
+                .listen('BidPlaced', (event) => {
+                    console.log('EVENT RECEIVED successfully!', event);
 
                     const price = document.getElementById('current-price');
+                    if (price) {
+                        price.classList.add('scale-125','text-secondary');
+                        setTimeout(()=>{
+                            price.classList.remove('scale-125','text-secondary');
+                        },500);
+                        price.innerText = '$' + event.amount;
+                    }
 
-                    price.classList.add('scale-125','text-secondary');
-
-                    setTimeout(()=>{
-                        price.classList.remove('scale-125','text-secondary');
-                    },500);
-
-                    document.getElementById('bids-count').innerText =
-                        event.bids_count;
-
-                    document.getElementById('current-price').innerText =
-                        '$' + event.amount;
+                    const bidsCount = document.getElementById('bids-count');
+                    if (bidsCount) {
+                        bidsCount.innerText = event.bids_count;
+                    }
                 })
-                .listen('AuctionEnded', (event)=>{ // وأزلنا النقطة من هنا أيضاً
-
-                    console.log('AUCTION ENDED EVENT', event);
+                .listen('AuctionEnded', (event) => {
+                    console.log('AUCTION ENDED EVENT received', event);
 
                     const status = document.getElementById('auction-status');
-
-                    console.log('STATUS ELEMENT:', status);
-
-                    if(status){
-
+                    if (status) {
                         status.textContent = 'ENDED';
-
-                        status.className =
-                            'px-3 py-1 rounded-full text-xs font-bold uppercase border bg-red-500/20 text-red-400 border-red-500/40';
-
+                        status.className = 'px-3 py-1 rounded-full text-xs font-bold uppercase border bg-red-500/20 text-red-400 border-red-500/40';
                     }
 
-                    if(event.winner){
-
-                        document.getElementById('auction-result').innerHTML = `
-
-                            <hr class="border-outline-variant">
-
-                            <h3 class="text-base font-semibold text-green-400">
-                            🏆 Auction Result
-                            </h3>
-
-                            <div class="flex justify-between">
-                            <span>Winner</span>
-                            <span>${event.winner}</span>
-                            </div>
-
-                            <div class="flex justify-between">
-                            <span>Winning Bid</span>
-                            <span>$${event.price}</span>
-                            </div>
-
-                            `;
-
+                    if (event.winner) {
+                        const result = document.getElementById('auction-result');
+                        if (result) {
+                            result.innerHTML = `
+                        <hr class="border-outline-variant">
+                        <h3 class="text-base font-semibold text-green-400">🏆 Auction Result</h3>
+                        <div class="flex justify-between"><span>Winner</span><span>${event.winner}</span></div>
+                        <div class="flex justify-between"><span>Winning Bid</span><span>$${event.price}</span></div>
+                    `;
+                        }
                     }
-
                 });
-
-
         });
     </script>
     <script>
