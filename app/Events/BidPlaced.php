@@ -5,7 +5,7 @@ namespace App\Events;
 use App\Models\Bid;
 use Illuminate\Broadcasting\Channel;
 use Illuminate\Broadcasting\InteractsWithSockets;
-use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
+use Illuminate\Contracts\Broadcasting\ShouldBroadcastNow;
 use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Queue\SerializesModels;
 
@@ -19,7 +19,7 @@ use Illuminate\Queue\SerializesModels;
  * high-concurrency, broadcasts are queued and dispatched asynchronously.
  * This prevents Reverb connection bottlenecks when many bids arrive at once.
  */
-class BidPlaced implements ShouldBroadcast
+class BidPlaced implements ShouldBroadcastNow
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;
 
