@@ -226,27 +226,24 @@
             }
 
             console.log('Echo ready');
-            console.log('My current auction ID is:', "{{ $auction->id ?? 'NO ID FOUND' }}");
 
-            const channelName = 'auction.{{ $auction->id }}';
-            console.log('Attempting to subscribe to channel:', channelName);
+            const auctionId = "{{ $auction->id }}";
+            console.log('Connecting to auction channel:', auctionId);
 
-            window.Echo.channel(channelName)
-                .subscribed(() => {
-                    console.log('SUCCESSFULLY SUBSCRIBED to channel:', channelName);
-                })
+            // استخدام connector مباشر ومستقر للتعامل مع الإرسال الفوري ShouldBroadcastNow
+            window.Echo.channel(`auction.${auctionId}`)
                 .error((error) => {
-                    console.error('Pusher Subscription Error:', error);
+                    console.error('Pusher Channel Error:', error);
                 })
-                .listen('BidPlaced', (event) => {
+                .listen('.BidPlaced', (event) => { // أو BidPlaced بدون نقطة حسب ما اعْتُمد لديكِ
                     console.log('EVENT RECEIVED successfully!', event);
 
                     const price = document.getElementById('current-price');
                     if (price) {
-                        price.classList.add('scale-125','text-secondary');
-                        setTimeout(()=>{
-                            price.classList.remove('scale-125','text-secondary');
-                        },500);
+                        price.classList.add('scale-125', 'text-secondary');
+                        setTimeout(() => {
+                            price.classList.remove('scale-125', 'text-secondary');
+                        }, 500);
                         price.innerText = '$' + event.amount;
                     }
 
@@ -255,7 +252,7 @@
                         bidsCount.innerText = event.bids_count;
                     }
                 })
-                .listen('AuctionEnded', (event) => {
+                .listen('.AuctionEnded', (event) => {
                     console.log('AUCTION ENDED EVENT received', event);
 
                     const status = document.getElementById('auction-status');
@@ -268,11 +265,11 @@
                         const result = document.getElementById('auction-result');
                         if (result) {
                             result.innerHTML = `
-                        <hr class="border-outline-variant">
-                        <h3 class="text-base font-semibold text-green-400">🏆 Auction Result</h3>
-                        <div class="flex justify-between"><span>Winner</span><span>${event.winner}</span></div>
-                        <div class="flex justify-between"><span>Winning Bid</span><span>$${event.price}</span></div>
-                    `;
+                            <hr class="border-outline-variant">
+                            <h3 class="text-base font-semibold text-green-400">🏆 Auction Result</h3>
+                            <div class="flex justify-between"><span>Winner</span><span>${event.winner}</span></div>
+                            <div class="flex justify-between"><span>Winning Bid</span><span>$${event.price}</span></div>
+                        `;
                         }
                     }
                 });
