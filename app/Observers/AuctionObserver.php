@@ -25,25 +25,15 @@ class AuctionObserver
      */
     public function created(Auction $auction): void
     {
-        Log::info("[AuctionObserver] Auction created: #{$auction->id}");
-
-        // التأكد من ضبط الحالة كـ active افتراضياً إذا لم تكن محددة
-        if (!$auction->status) {
-            $auction->updateQuietly(['status' => AuctionStatus::ACTIVE]);
-        }
+        Log::info("[AuctionObserver] Auction created: #{$auction->id}, End Time: {$auction->end_time}");
 
         $this->analyzeAuctionTrust($auction);
 
-        $endTime = Carbon::parse($auction->end_time);
-        $now = Carbon::now();
+        if ($auction->end_time) {
+            $endTime = Carbon::parse($auction->end_time);
 
-        // التأكد من أن وقت الانتهاء في المستقبل، وحساب الفارق بالثواني بدقة
-        if ($endTime->isFuture()) {
-            $delaySeconds = $now->diffInSeconds($endTime);
-
-            Log::info("[AuctionObserver] Dispatching CloseAuctionJob with delay of {$delaySeconds} seconds.");
-
-            CloseAuctionJob::dispatch($auction)->delay(now()->addSeconds($delaySeconds));
+            // جدولة الإغلاق مباشرة دون شروط تفنيّد معقدة قد تفشل بسبب التوقيت
+            CloseAuctionJob::dispatch($auction)->delay($endTime);
         }
     }
 
@@ -89,7 +79,7 @@ class AuctionObserver
 
         if ($response->successful()) {
             $evaluation = $response->json('candidates.0.content.parts.0.text');
-            $auction->update(['ai_evaluation' => $evaluation]);
+            $auction->updateQuietly(['ai_evaluation' => $evaluation]);
         } else {
             Log::error("[AuctionObserver] Gemini API Error for auction #{$auction->id}: " . $response->body());
         }

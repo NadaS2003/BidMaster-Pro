@@ -33,7 +33,7 @@ class StoreAuctionRequest extends FormRequest
             'title'          => ['required', 'string', 'max:255'],
             'description'    => ['required', 'string'],
             'starting_price' => ['required', 'numeric', 'min:0'],
-            'end_time'       => ['required', 'date', 'after:now'],
+            'end_time' => 'required|date|after:now',
             'start_time'     => ['nullable', 'date', 'before:end_time'],
             'minimum_tier'   => ['nullable', new Enum(UserTier::class)],
             'image'          => ['nullable', 'image', 'mimes:jpeg,png,jpg,gif', 'max:51200'],

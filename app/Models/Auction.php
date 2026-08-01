@@ -33,10 +33,6 @@ class Auction extends Model
         'winner_id',
     ];
 
-    protected $attributes = [
-        'status' => 'active', // تعيين الحالة الافتراضية لتكون نشطة دائماً عند الإنشاء
-    ];
-
     protected function casts(): array
     {
         return [
