@@ -228,7 +228,7 @@
             console.log('Echo ready');
 
             window.Echo.channel('auction.{{ $auction->id }}')
-                .listen('.BidPlaced', (event) => {
+                .listen('BidPlaced', (event) => {
 
                     console.log('EVENT RECEIVED', event);
 
@@ -246,7 +246,7 @@
                     document.getElementById('current-price').innerText =
                         '$' + event.amount;
                 })
-                .listen('.AuctionEnded', (event)=>{
+                .listen('AuctionEnded', (event)=>{
 
                     console.log('AUCTION ENDED EVENT', event);
 
